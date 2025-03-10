@@ -64,13 +64,13 @@ The project combines secure random generation, statistical analysis, and clean m
 
 ## 🤝 Contributing
 
-Vos contributions, retours et suggestions jouent un rôle essentiel dans l’amélioration continue de ce projet. Que ce soit pour signaler un problème, proposer une nouvelle fonctionnalité ou soumettre une amélioration, chaque contribution compte et est la bienvenue.
+We truly appreciate and welcome community involvement. Your contributions, feedback, and suggestions play a crucial role in improving the project for everyone. If you're interested in contributing or have ideas for enhancements, please feel free to open an issue or submit a pull request on our GitHub repository. Every contribution, no matter how big or small, is highly valued and greatly appreciated!
 
 <p align="right">(<a href="#top">🔼 Back to top</a>)</p>
 
 ## 🌠 Star Evolution
 
-Découvrez l’évolution des étoiles attribuées à ce projet et suivez sa croissance au fil du temps:
+Explore the star history of this project and see how it has evolved over time:
 
 <a href="https://star-history.com/#franckferman/Monty-Hall-Problem-Simulator&Timeline">
   <picture>
@@ -79,11 +79,13 @@ Découvrez l’évolution des étoiles attribuées à ce projet et suivez sa cro
   </picture>
 </a>
 
-Chaque étoile compte. Merci pour votre soutien. Vos encouragements nourrissent notre motivation et contribuent à l’évolution du projet. ✨
+Your support is greatly appreciated. We're grateful for every star! Your backing fuels our passion. ✨
+
+<p align="right">(<a href="#top">🔼 Back to top</a>)</p>
 
 ## 📚 License
 
-Ce projet est sous licence GNU Affero General Public License, Version 3.0 (AGPL-3.0). Pour plus de détails, veuillez consulter le fichier de licence dans le dépôt: [Read the license on GitHub](https://github.com/franckferman/Monty-Hall-Problem-Simulator/blob/stable/LICENSE)
+This project is licensed under the GNU Affero General Public License, Version 3.0. For more details, please refer to the LICENSE file in the repository: [Read the license on GitHub](https://github.com/franckferman/Monty-Hall-Problem-Simulator/blob/stable/LICENSE)
 
 <p align="right">(<a href="#top">🔼 Back to top</a>)</p>
 
