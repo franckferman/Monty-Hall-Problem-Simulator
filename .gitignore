@@ -1,0 +1,79 @@
+# Go
+simulator
+pkg/
+.gocache/
+.go-build/
+go.work
+go.work.sum
+staticcheck.cache/
+golangci-lint-report.xml
+
+# Shell/Bash
+*.bak
+*.orig
+*.tmp
+*.old
+*.pid
+*.sock
+*.history
+
+# Logs
+*.log
+*.log.*
+*.out
+*.err
+*.trace
+nohup.out
+
+# Compiled artifacts
+bin/
+obj/
+*.o
+*.so
+*.a
+*.la
+*.lo
+*.dylib
+*.exe
+*.dll
+*.com
+*.d
+Makefile~
+
+# Generated / locks
+*.lock
+
+# Editors
+*.swp
+*.swo
+*.swn
+*.viminfo
+.nanorc
+*.save
+.vscode/
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+.idea/
+*.iml
+*~
+*.spacemacs
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+.Spotlight-V100/
+.Trashes/
+._*
+__MACOSX/
+
+# Windows
+Thumbs.db
+ehthumbs.db
+*.lnk
+Desktop.ini
+$RECYCLE.BIN/
+
+# Project
+CLAUDE.md
