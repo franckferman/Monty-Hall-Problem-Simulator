@@ -1,0 +1,51 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version: '1.21'
+
+      - name: Build binaries
+        run: |
+          mkdir -p bin
+          GOOS=linux   GOARCH=amd64 go build -ldflags="-s -w" -o bin/Monty-Hall-Problem-Simulator-Linux        .
+          GOOS=windows GOARCH=amd64 go build -ldflags="-s -w" -o bin/Monty-Hall-Problem-Simulator-Windows.exe  .
+          GOOS=darwin  GOARCH=amd64 go build -ldflags="-s -w" -o bin/Monty-Hall-Problem-Simulator-MacOS        .
+          GOOS=darwin  GOARCH=arm64 go build -ldflags="-s -w" -o bin/Monty-Hall-Problem-Simulator-MacOS-ARM64  .
+
+      - name: Sign Windows binary
+        run: |
+          sudo apt-get install -y osslsigncode
+          openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem \
+            -days 3650 -nodes \
+            -subj "/CN=Franck Ferman"
+          openssl pkcs12 -export -out cert.pfx \
+            -inkey key.pem -in cert.pem -passout pass:
+          osslsigncode sign -pkcs12 cert.pfx -pass "" \
+            -n "Monty-Hall-Problem-Simulator" \
+            -i "https://github.com/franckferman/Monty-Hall-Problem-Simulator" \
+            -t http://timestamp.digicert.com \
+            -in  bin/Monty-Hall-Problem-Simulator-Windows.exe \
+            -out bin/Monty-Hall-Problem-Simulator-Windows-signed.exe
+          mv bin/Monty-Hall-Problem-Simulator-Windows-signed.exe \
+             bin/Monty-Hall-Problem-Simulator-Windows.exe
+          rm -f key.pem cert.pem cert.pfx
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: bin/*
+          generate_release_notes: true

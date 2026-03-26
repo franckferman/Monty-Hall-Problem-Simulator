@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Monty Hall Problem Simulator</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Fraunces:opsz,wght@9..144,700;9..144,800&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Nav bar -->
+  <nav class="nav">
+    <div class="nav-inner">
+      <span class="nav-brand">&#x2605; Monty Hall &#x2605; <span class="on-air-badge">ON AIR</span></span>
+      <button class="theme-btn" id="theme-btn" title="Toggle theme" aria-label="Toggle theme">
+        <span class="t-sun">&#x2600;&#xFE0F;</span>
+        <span class="t-track"><span class="t-knob"></span></span>
+        <span class="t-moon">&#x1F319;</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Hero header -->
+  <header>
+    <div class="header-inner">
+      <div class="header-doors">&#x1F6AA;&#x1F6AA;&#x1F6AA;</div>
+      <p class="header-eyebrow">&#x2605; Live from the Studio &#x2605;</p>
+      <h1>The Monty Hall Problem</h1>
+      <p class="tagline">A classic probability paradox &mdash; and why your intuition is probably wrong</p>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- Demo + Controls -->
+    <div class="top-grid">
+
+      <section class="card demo-card">
+        <div class="demo-header">
+          <h2 id="demo-title">&#x1F3AC; Live Demo</h2>
+          <div class="mode-toggle">
+            <button class="mode-btn active" id="btn-watch">Watch</button>
+            <button class="mode-btn"        id="btn-play">Play</button>
+          </div>
+        </div>
+        <p class="demo-hint" id="demo-hint">Getting ready&hellip;</p>
+        <div id="doors-container" class="doors-container"></div>
+        <div id="play-choice" class="play-choice hidden">
+          <button id="play-stay-btn"   class="btn-choice stay-choice">&#x1F6AA; Stay</button>
+          <button id="play-switch-btn" class="btn-choice switch-choice">&#x1F504; Switch</button>
+        </div>
+        <div id="demo-result" class="demo-result hidden"></div>
+        <div id="play-stats" class="play-stats hidden">
+          <div class="play-stat"><span class="ps-label">Games</span><span class="ps-val" id="play-games">0</span></div>
+          <div class="play-stat"><span class="ps-label c-green">Switch</span><span class="ps-val" id="play-switch-stat">0/0</span></div>
+          <div class="play-stat"><span class="ps-label c-red">Stay</span><span class="ps-val" id="play-stay-stat">0/0</span></div>
+        </div>
+      </section>
+
+      <section class="card controls-card">
+        <h2>&#x2699;&#xFE0F; Simulation</h2>
+        <div class="control-group">
+          <label for="doors-range">Doors: <strong id="doors-display">3</strong></label>
+          <input type="range" id="doors-range" min="3" max="10" value="3" class="slider" />
+          <div class="slider-hints"><span>3</span><span>6</span><span>10</span></div>
+        </div>
+        <div class="controls-row">
+          <div class="control-group">
+            <label for="max-select">Max trials</label>
+            <select id="max-select" class="select">
+              <option value="1000">1,000</option>
+              <option value="10000">10,000</option>
+              <option value="100000">100,000</option>
+              <option value="1000000" selected>1,000,000</option>
+            </select>
+          </div>
+          <div class="control-group">
+            <label for="speed-select">Speed</label>
+            <select id="speed-select" class="select">
+              <option value="500">&#x1F422; Slow</option>
+              <option value="80" selected>&#x1F40E; Medium</option>
+              <option value="10">&#x1F680; Fast</option>
+              <option value="0">&#x26A1; Instant</option>
+            </select>
+          </div>
+        </div>
+        <label class="checkbox-label">
+          <input type="checkbox" id="parallel-check" />
+          <span>Use all CPU cores (parallel)</span>
+        </label>
+        <div class="btn-row">
+          <button id="start-btn"    class="btn btn-primary">&#x25B6; Start</button>
+          <button id="reset-btn"    class="btn btn-secondary">&#x21BA; Reset</button>
+          <button id="download-btn" class="btn btn-download hidden">&#x2B07; CSV</button>
+        </div>
+        <div id="progress-wrap" class="progress-wrap hidden">
+          <div class="progress-track"><div id="progress-bar" class="progress-bar"></div></div>
+          <span id="trial-label" class="trial-label">0 simulations</span>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card stay-card">
+        <div class="stat-badge stay-badge">STAY</div>
+        <div class="stat-pct" id="stay-pct">&#x2014;</div>
+        <div class="stat-ci"  id="stay-ci">&#x2014;</div>
+        <div class="stat-theory">Theory: <strong id="stay-theory">33.33%</strong></div>
+        <div class="stat-delta" id="stay-delta"></div>
+      </div>
+      <div class="vs-col">
+        <div class="vs-text">VS</div>
+        <div class="gain-label">switching gains</div>
+        <div class="gain-val" id="gain-value">&#x2014;</div>
+      </div>
+      <div class="stat-card switch-card">
+        <div class="stat-badge switch-badge">SWITCH</div>
+        <div class="stat-pct" id="switch-pct">&#x2014;</div>
+        <div class="stat-ci"  id="switch-ci">&#x2014;</div>
+        <div class="stat-theory">Theory: <strong id="switch-theory">66.67%</strong></div>
+        <div class="stat-delta" id="switch-delta"></div>
+      </div>
+    </div>
+
+    <!-- Chart -->
+    <section class="card chart-card">
+      <h2>&#x1F4CA; Convergence toward theoretical values</h2>
+      <p class="chart-sub">As simulations increase, results converge to the mathematical prediction</p>
+      <div class="chart-wrap"><canvas id="chart"></canvas></div>
+    </section>
+
+    <!-- Math -->
+    <section class="card math-card">
+      <button class="accordion-btn" id="math-btn" aria-expanded="false">
+        <span>&#x1F4D0; The Mathematics Behind It</span>
+        <span class="chevron">&#x25BC;</span>
+      </button>
+      <div class="accordion-body" id="math-body" aria-hidden="true">
+        <div id="math-content" class="math-content"></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Monty Hall Problem Simulator v2.0 &mdash; GNU AGPLv3</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
